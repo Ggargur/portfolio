@@ -1,7 +1,7 @@
 /*
   Design tokens. Identity comes from the logo: an ink "G", a sky-blue "G" and clouds.
-  Ink + sky blue carry the page; amber marks things that are "in progress".
-  Hard offset shadows (no blur) echo the doubled G of the logo.
+  Ink + sky blue carry the page; amber marks what is current.
+  The GUI is a tiling window manager: flat panes, 1px borders, no drop shadows.
 */
 :root {
   color-scheme: light;
@@ -23,14 +23,12 @@
   --logo-tile: #f3f7fc;
   --scrim: rgba(13, 17, 24, 0.35);
 
-  --f-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
-  --f-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --f-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
-  --r-sm: 6px;
-  --r: 10px;
-  --offset: 5px 5px 0 var(--accent-soft);
-  --offset-sm: 3px 3px 0 var(--accent-soft);
+  --r-sm: 4px;
+  --r: 6px;
+  --gap: 10px;
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --t-fast: 140ms;
   --t-med: 220ms;
@@ -41,7 +39,7 @@
   --z-peek: 20;
   --z-console: 40;
 
-  --max: 1080px;
+  --max: 1240px;
   --gutter: max(16px, env(safe-area-inset-left, 0px));
 }
 

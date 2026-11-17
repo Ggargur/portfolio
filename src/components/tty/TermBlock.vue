@@ -26,8 +26,9 @@ onMounted(() => {
   if (props.out.kind === 'repos') load();
 });
 
-// Logo as text: ink G + sky-blue G.
-const G = ['  ██████  ', ' ██       ', ' ██  ███  ', ' ██    ██ ', '  ██████  '];
+// Logo as a pixel grid (block glyphs don't line up in every font): ink G + sky-blue G.
+const G = ['.####.', '#.....', '#..##.', '#...#.', '.####.'];
+const pixels = G.flatMap((row) => [...row, ' ', ...row].map((c, i) => (c === '#' ? (i < row.length ? 'p1' : 'p2') : '')));
 
 const swatches = ['--ink', '--accent', '--accent-soft', '--warm', '--syn-str', '--muted'];
 
@@ -56,18 +57,18 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
 
   <div v-else-if="out.kind === 'whoami'">
     <div class="big">{{ profile.name }}</div>
-    <div class="dim">c# game developer · {{ yearsOfExperience }}+ years · lead programmer @ {{ profile.now.company.toLowerCase() }} · fullstack on the side</div>
+    <div class="dim">c# game developer · {{ yearsOfExperience }}+ years · vr · mobile · pc · console · fullstack on the side</div>
   </div>
 
   <div v-else-if="out.kind === 'neofetch'" class="neo">
-    <pre class="art" role="img" aria-label="GG logo in block characters"><template v-for="(row, i) in G" :key="i"><span class="g1">{{ row }}</span><span class="g2">{{ row }}</span>{{ i < G.length - 1 ? '\n' : '' }}</template></pre>
+    <div class="art" role="img" aria-label="GG logo">
+      <span v-for="(on, i) in pixels" :key="i" :class="on"></span>
+    </div>
     <dl>
       <dt class="who">{{ profile.handle }}@{{ profile.host }}</dt>
       <dd></dd>
       <dt>OS</dt>
       <dd>Game Developer</dd>
-      <dt>Host</dt>
-      <dd>{{ profile.now.company }} <span class="dim">({{ profile.now.role.toLowerCase() }})</span></dd>
       <dt>Kernel</dt>
       <dd>Unity + C#</dd>
       <dt>Uptime</dt>
@@ -78,8 +79,6 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
       <dd>{{ profile.location }}</dd>
       <dt>Packages</dt>
       <dd>{{ skillCount }} (cat skills.json)</dd>
-      <dt>Process</dt>
-      <dd>metroidvania-2.5d <span class="warn">(running, NDA)</span></dd>
       <dd class="swatches" aria-hidden="true">
         <span v-for="s in swatches" :key="s" :style="{ background: `var(${s})` }"></span>
       </dd>
@@ -197,14 +196,17 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
   align-items: flex-start;
 }
 .art {
-  margin: 0;
-  font: 700 13px/1.15 var(--f-mono);
+  display: grid;
+  grid-template-columns: repeat(13, 9px);
+  grid-auto-rows: 9px;
+  gap: 1px;
+  padding-top: 4px;
 }
-.g1 {
-  color: var(--ink);
+.art .p1 {
+  background: var(--ink);
 }
-.g2 {
-  color: var(--accent);
+.art .p2 {
+  background: var(--accent);
 }
 dl {
   margin: 0;
@@ -260,7 +262,6 @@ dd {
   border: 1px solid var(--rule);
   border-radius: var(--r-sm);
   overflow: hidden;
-  box-shadow: var(--offset);
   pointer-events: none;
   background: var(--surface);
 }

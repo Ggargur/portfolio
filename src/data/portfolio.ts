@@ -10,9 +10,6 @@ export interface Project {
   url: string;
   host: 'steam' | 'itch.io';
   tags: string[];
-  /** Short highlight shown above the title (awards, status). */
-  badge?: string;
-  flagship?: boolean;
 }
 
 export type Track = 'games' | 'web';
@@ -45,12 +42,6 @@ export const profile = {
   location: 'Rio de Janeiro, Brazil',
   careerStart: '03/2021',
   githubUser: 'Ggargur',
-  now: {
-    role: 'Lead Programmer',
-    company: 'Darkside',
-    project: 'Unannounced 2.5D metroidvania',
-    detail: 'Mugen-style fighting mechanics · 4-person programming team',
-  },
   dayJob: { role: 'Clojure Developer', company: 'BuzzLabs' },
 };
 
@@ -64,8 +55,6 @@ export const projects: Project[] = [
     url: 'https://store.steampowered.com/app/3213680/Kitty_Rhythm_TD/',
     host: 'steam',
     tags: ['3D', 'Rhythm', 'Tower defense', 'Unity'],
-    badge: '3× winner · Game Jam Plus 2023–24',
-    flagship: true,
   },
   {
     slug: 'property-collector',
@@ -90,18 +79,6 @@ export const projects: Project[] = [
 /** Ongoing roles first, then most recently ended. */
 export const experiences: Experience[] = [
   {
-    hash: 'a7c31d9',
-    role: 'Lead Programmer',
-    company: 'Darkside',
-    track: 'games',
-    start: '04/2026',
-    end: null,
-    points: [
-      'Lead a 4-person programming team on an unannounced (NDA) 2.5D metroidvania with Mugen-style fighting mechanics.',
-      'Own gameplay architecture and technical direction; coordinate implementation across the team.',
-    ],
-  },
-  {
     hash: 'e02b4f6',
     role: 'Clojure Developer',
     company: 'BuzzLabs',
@@ -111,6 +88,18 @@ export const experiences: Experience[] = [
     points: [
       'Build features end to end in Clojure (backend) and ClojureScript (frontend).',
       'Model and query data with Datomic, using Datalog.',
+    ],
+  },
+  {
+    hash: 'a7c31d9',
+    role: 'Lead Programmer',
+    company: 'Darkside',
+    track: 'games',
+    start: '04/2026',
+    end: '10/2026',
+    points: [
+      'Led a 4-person programming team on an unannounced 2.5D metroidvania with Mugen-style fighting mechanics.',
+      'Owned gameplay architecture and technical direction, and coordinated implementation across the team.',
     ],
   },
   {

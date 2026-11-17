@@ -4,8 +4,8 @@ Personal site of Gabriel Gargur, C# game developer and fullstack web developer.
 
 The site has two views of the same content, switched from the top bar:
 
-- **GUI**: a regular page with the games, work history, skills, recent GitHub repos and contact.
-- **TTY**: the same content as a terminal session (`neofetch`, `ls ~/games`, `git log`, `cat skills.json`…), ending in a prompt you can type into.
+- **GUI** (workspace 1): a tiling-window-manager desktop. Each section is a window (about, contact, work, games, skills, background, repos) laid out in a grid, with the ASCII wallpaper showing through the gaps.
+- **TTY** (workspace 2): the same content as a terminal session (`neofetch`, `ls ~/games`, `git log`, `cat skills.json`…), ending in a prompt you can type into.
 
 Press <kbd>`</kbd> anywhere to open a drop-down console that works in both views. Type `help` to see the commands.
 

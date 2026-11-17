@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import AsciiField from './components/AsciiField.vue';
-import TopBar from './components/TopBar.vue';
+import StatusBar from './components/StatusBar.vue';
 import ConsoleDrawer from './components/ConsoleDrawer.vue';
-import GuiHero from './components/gui/GuiHero.vue';
-import GuiProjects from './components/gui/GuiProjects.vue';
-import GuiExperience from './components/gui/GuiExperience.vue';
-import GuiSkills from './components/gui/GuiSkills.vue';
-import GuiRepos from './components/gui/GuiRepos.vue';
-import GuiAbout from './components/gui/GuiAbout.vue';
-import GuiContact from './components/gui/GuiContact.vue';
+import GuiDesktop from './components/gui/GuiDesktop.vue';
 import TtyView from './components/tty/TtyView.vue';
 import { useViewMode } from './composables/useViewMode';
 import { profile } from './data/portfolio';
@@ -44,19 +38,11 @@ watch(mode, () => window.scrollTo({ top: 0 }));
 <template>
   <a class="skip-link" href="#main">Skip to content</a>
   <AsciiField />
-  <TopBar :console-open="consoleOpen" @toggle-console="consoleOpen = !consoleOpen" />
+  <StatusBar :console-open="consoleOpen" @toggle-console="consoleOpen = !consoleOpen" />
 
   <main id="main" tabindex="-1">
     <div id="top" class="wrap content">
-      <div v-if="mode === 'gui'" class="gui">
-        <GuiHero />
-        <GuiProjects />
-        <GuiExperience />
-        <GuiSkills />
-        <GuiAbout />
-        <GuiRepos />
-        <GuiContact />
-      </div>
+      <GuiDesktop v-if="mode === 'gui'" />
       <TtyView v-else />
     </div>
   </main>
@@ -74,18 +60,14 @@ main:focus {
   outline: none;
 }
 .content {
-  padding-block: 56px 32px;
-}
-.gui {
-  display: grid;
-  gap: 104px;
+  padding-block: var(--gap);
 }
 .foot {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
-  padding-block: 40px 48px;
+  padding-block: 16px 28px;
   font: 400 13px/1.6 var(--f-mono);
   color: var(--muted);
 }
@@ -97,10 +79,7 @@ main:focus {
 }
 @media (max-width: 640px) {
   .content {
-    padding-block: 32px 24px;
-  }
-  .gui {
-    gap: 72px;
+    padding-block: 8px;
   }
 }
 </style>

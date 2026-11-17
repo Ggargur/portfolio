@@ -46,7 +46,6 @@ async function onSubmit(line: string) {
   <section class="term" aria-label="Terminal view">
     <div class="term-bar">
       <span>{{ profile.handle }}@{{ profile.host }}: ~ — zsh</span>
-      <span class="wm" aria-hidden="true">─ □ ×</span>
     </div>
     <div class="term-body">
       <div class="block">
@@ -80,7 +79,6 @@ async function onSubmit(line: string) {
   border: 1px solid var(--rule);
   border-radius: var(--r);
   overflow: hidden;
-  box-shadow: var(--offset);
   font: 400 14px/1.65 var(--f-mono);
 }
 .term-bar {
@@ -92,10 +90,6 @@ async function onSubmit(line: string) {
   border-bottom: 1px solid var(--line);
   font-size: 12.5px;
   color: var(--muted);
-}
-.wm {
-  letter-spacing: 0.25em;
-  user-select: none;
 }
 .term-body {
   padding: 20px clamp(14px, 3vw, 28px) 24px;
