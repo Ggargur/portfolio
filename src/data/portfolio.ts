@@ -1,15 +1,21 @@
 import kittyRhythm from '../assets/kitty-rhythm-td.webp';
 import propertyCollector from '../assets/property-collector.webp';
 import tinySports from '../assets/tiny-sports.webp';
+import godOfWar from '../assets/god-of-war-sons-of-sparta.webp';
 
 export interface Project {
   slug: string;
   title: string;
   description: string;
-  image: string;
-  url: string;
-  host: 'steam' | 'itch.io';
+  /** Optional: titles without a cover show a text placeholder. */
+  image?: string;
+  /** Optional: titles without a public page are listed without a link. */
+  url?: string;
+  /** Where it's published, or the platform when there's no page. */
+  host: string;
   tags: string[];
+  /** What I did on it, when the game isn't mine. */
+  credit?: string;
 }
 
 export type Track = 'games' | 'web';
@@ -46,6 +52,15 @@ export const profile = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: 'god-of-war-sons-of-sparta',
+    title: 'God of War: Sons of Sparta',
+    image: godOfWar,
+    description: 'A shipped console title. I fixed gameplay bugs and implemented area mechanics.',
+    host: 'console',
+    tags: ['Unity', 'Commercial'],
+    credit: 'Unity Developer at Mega Cat Studios',
+  },
   {
     slug: 'kitty-rhythm-td',
     title: 'Kitty Rhythm TD',

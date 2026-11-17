@@ -59,6 +59,7 @@ const COMMANDS: Record<string, Handler> = {
     if (!p) {
       return [lines([{ t: `usage: open <name|1-${projects.length}>   e.g. open kitty`, c: 'dim' }])];
     }
+    if (!p.url) return [lines([{ t: `${p.title}: no public page yet (${p.credit ?? p.host})`, c: 'dim' }])];
     return [lines([{ t: '→ ' }, { t: `${p.title} on ${p.host}`, href: p.url }, { t: '  (click to open)', c: 'dim' }])];
   },
   git: (args) =>

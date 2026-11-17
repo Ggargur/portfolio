@@ -7,14 +7,21 @@ import { projects } from '../../data/portfolio';
   <WmWindow name="games" title="games — ~/games">
     <ul class="list">
       <li v-for="p in projects" :key="p.slug">
-        <a :href="p.url" target="_blank" rel="noopener noreferrer">
-          <img :src="p.image" :alt="`${p.title} cover art`" loading="lazy" width="120" height="60" />
+        <component
+          :is="p.url ? 'a' : 'div'"
+          class="item"
+          v-bind="p.url ? { href: p.url, target: '_blank', rel: 'noopener noreferrer' } : {}"
+        >
+          <img v-if="p.image" :src="p.image" :alt="`${p.title} cover art`" loading="lazy" width="120" height="60" />
+          <span v-else class="ph" aria-hidden="true">{{ p.title.split(':')[0] }}</span>
           <span class="text">
             <span class="name">{{ p.title }}</span>
             <span class="desc">{{ p.description }}</span>
-            <span class="meta">{{ p.tags.join(' · ') }} — {{ p.host }}&nbsp;↗</span>
+            <span class="meta">
+              {{ [p.credit, ...p.tags].filter(Boolean).join(' · ') }} — {{ p.host }}<template v-if="p.url">&nbsp;↗</template>
+            </span>
           </span>
-        </a>
+        </component>
       </li>
     </ul>
   </WmWindow>
@@ -30,7 +37,7 @@ import { projects } from '../../data/portfolio';
 li + li {
   border-top: 1px solid var(--line);
 }
-a {
+.item {
   display: grid;
   grid-template-columns: 120px minmax(0, 1fr);
   gap: 14px;
@@ -43,13 +50,14 @@ a {
   text-decoration: none;
   transition: background-color var(--t-fast);
 }
-li:first-child a {
+li:first-child .item {
   padding-top: 0;
 }
-a:hover {
+a.item:hover {
   background: var(--surface-2);
 }
-img {
+img,
+.ph {
   display: block;
   width: 120px;
   height: 60px;
@@ -58,6 +66,15 @@ img {
   border-radius: 3px;
   background: var(--surface-2);
 }
+.ph {
+  display: grid;
+  place-items: center;
+  padding: 4px;
+  font: 500 11px/1.2 var(--f-mono);
+  text-align: center;
+  color: var(--muted);
+  box-sizing: border-box;
+}
 .text {
   display: grid;
   gap: 2px;
@@ -65,7 +82,7 @@ img {
 .name {
   font-weight: 600;
 }
-a:hover .name {
+a.item:hover .name {
   color: var(--accent);
 }
 .desc {
@@ -77,10 +94,11 @@ a:hover .name {
   color: var(--muted);
 }
 @media (max-width: 400px) {
-  a {
+  .item {
     grid-template-columns: 1fr;
   }
-  img {
+  img,
+  .ph {
     width: 100%;
     height: auto;
     aspect-ratio: 2 / 1;
