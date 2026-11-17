@@ -1,69 +1,158 @@
-h1 {
-  font-size: 2.5rem;
+/*
+  Design tokens. Identity comes from the logo: an ink "G", a sky-blue "G" and clouds.
+  Ink + sky blue carry the page; amber marks things that are "in progress".
+  Hard offset shadows (no blur) echo the doubled G of the logo.
+*/
+:root {
+  color-scheme: light;
+  --bg: #edf2f8;
+  --surface: #ffffff;
+  --surface-2: #f4f7fb;
+  --ink: #131923;
+  --muted: #566275;
+  --line: #d4dde9;
+  --rule: #a9b6c8;
+  --accent: #2a6db5;
+  --accent-soft: #b8d8f7;
+  --warm: #a35f08;
+  --syn-key: #2a6db5;
+  --syn-str: #2b7a47;
+  --syn-num: #a35f08;
+  --syn-com: #6f7b8f;
+  --glyph: rgba(42, 109, 181, 0.2);
+  --logo-tile: #f3f7fc;
+  --scrim: rgba(13, 17, 24, 0.35);
+
+  --f-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --f-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --r-sm: 6px;
+  --r: 10px;
+  --offset: 5px 5px 0 var(--accent-soft);
+  --offset-sm: 3px 3px 0 var(--accent-soft);
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --t-fast: 140ms;
+  --t-med: 220ms;
+
+  --z-field: 0;
+  --z-content: 1;
+  --z-bar: 10;
+  --z-peek: 20;
+  --z-console: 40;
+
+  --max: 1080px;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
 }
 
-p.lead {
-  font-size: 1.25rem;
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0d1118;
+  --surface: #151b26;
+  --surface-2: #111620;
+  --ink: #e5ebf4;
+  --muted: #8f9bae;
+  --line: #253043;
+  --rule: #3a4760;
+  --accent: #8fc5f8;
+  --accent-soft: #24405f;
+  --warm: #f1b04c;
+  --syn-key: #8fc5f8;
+  --syn-str: #9fd49b;
+  --syn-num: #f1b04c;
+  --syn-com: #66748a;
+  --glyph: rgba(143, 197, 248, 0.15);
+  --scrim: rgba(0, 0, 0, 0.5);
 }
 
-.scroll-progress {
-  position: sticky;
-  top: 0;
-  height: 4px;
-  background: #e0e0e0;
-  z-index: 10;
-  overflow: hidden;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.scroll-progress-bar {
-  height: 100%;
-  background-color: #007bff;
-  transition: width 0.2s ease;
-}
-
-.project-scroll {
-  display: flex;
-  overflow-x: auto;
-  gap: 1rem;
-  scroll-snap-type: x mandatory;
+html {
   scroll-behavior: smooth;
 }
-
-.project-scroll > * {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  min-width: 300px;
-}
-
-@media (max-width: 768px) {
-  .project-scroll {
-    flex-direction: column;
-    overflow-x: unset;
-    gap: 1.5rem;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
-.timeline-path {
-  stroke-dasharray: 1000;
-  stroke-dashoffset: 1000;
-  animation: draw 3s ease forwards;
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-@keyframes draw {
-  to {
-    stroke-dashoffset: 0;
-  }
+img {
+  max-width: 100%;
 }
 
-.bubble-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: block;
-  pointer-events: none;
-  z-index: -1;
-  /*filter: blur(8px);*/
-  image-rendering: pixelated;
+a {
+  color: var(--accent);
 }
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.wrap {
+  position: relative;
+  z-index: var(--z-content);
+  max-width: var(--max);
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 10px 14px;
+  border-radius: var(--r-sm);
+  font: 600 14px/1 var(--f-body);
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+/* Terminal syntax colors, shared by the TTY view and the console. */
+.k { color: var(--syn-key); }
+.s { color: var(--syn-str); }
+.n { color: var(--syn-num); }
+.cm { color: var(--syn-com); }
+.dim { color: var(--muted); }
+.b { font-weight: 700; }
+.warn { color: var(--warm); }

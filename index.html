@@ -1,10 +1,39 @@
 <!doctype html>
-<html lang="pt-br">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Gabriel Gargur · Game developer</title>
+    <meta
+      name="description"
+      content="Gabriel Gargur, game developer (Unity, C#) and founder of Far Beyond Studios, the team behind Kitty Rhythm TD."
+    />
+    <meta name="theme-color" content="#edf2f8" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d1118" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gabriel Gargur</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Gabriel Gargur · Game developer" />
+    <meta property="og:description" content="Games in Unity and C#. Founder of Far Beyond Studios, making Kitty Rhythm TD." />
+    <meta property="og:image" content="/og-logo.png" />
+    <meta name="twitter:card" content="summary" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    />
+
+    <!-- Apply the saved/OS theme before first paint, so dark-mode visitors don't see a light flash. -->
+    <script>
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem('gg-theme'); } catch (e) { /* storage blocked: fall back to OS theme */ }
+        if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>
