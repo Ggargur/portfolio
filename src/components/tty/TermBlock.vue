@@ -92,14 +92,17 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
         <tr
           v-for="(p, i) in projects"
           :key="p.slug"
-          @mouseenter="showPeek(p.image, $event)"
-          @mousemove="showPeek(p.image, $event)"
+          @mouseenter="p.image && showPeek(p.image, $event)"
+          @mousemove="p.image && showPeek(p.image, $event)"
           @mouseleave="peek = null"
         >
           <td class="dim">drwxr-xr-x</td>
           <td class="dim">{{ i + 1 }}</td>
           <td class="n">{{ p.host }}</td>
-          <td><a :href="p.url" v-bind="ext" class="dir">{{ p.slug }}/</a></td>
+          <td>
+            <a v-if="p.url" :href="p.url" v-bind="ext" class="dir">{{ p.slug }}/</a>
+            <span v-else class="dir">{{ p.slug }}/</span>
+          </td>
           <td class="cm"># {{ p.description }}</td>
         </tr>
       </tbody>
