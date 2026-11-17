@@ -10,7 +10,7 @@ export interface Seg {
 }
 
 /** Rich blocks reuse the same components the TTY view renders statically. */
-export type BlockKind = 'whoami' | 'neofetch' | 'ls' | 'gitlog' | 'skills' | 'contact' | 'repos' | 'cat';
+export type BlockKind = 'whoami' | 'neofetch' | 'ls' | 'gitlog' | 'skills' | 'contact' | 'repos' | 'about' | 'cat';
 
 export type Output = { kind: 'lines'; lines: Seg[][] } | { kind: BlockKind };
 
@@ -33,6 +33,7 @@ const HELP: [string, string][] = [
   ['git log', 'work history'],
   ['skills', 'cat skills.json'],
   ['gh repo list', 'recent GitHub repos'],
+  ['about', 'awards, education, languages'],
   ['contact', 'how to reach me'],
   ['gui / tty', 'switch view'],
   ['theme [light|dark]', 'switch colors'],
@@ -70,10 +71,12 @@ const COMMANDS: Record<string, Handler> = {
       : [lines([{ t: 'usage: ' }, { t: 'gh repo list', c: 'k' }])],
   skills: () => [block('skills')],
   contact: () => [block('contact')],
+  about: () => [block('about')],
   cat: (args) => {
     const f = args[0] ?? '';
     if (f.startsWith('skills')) return [block('skills')];
     if (f.startsWith('contact')) return [block('contact')];
+    if (f.startsWith('about')) return [block('about')];
     return [
       lines([
         { t: `cat: ${f || '?'}: No such file. Try ` },

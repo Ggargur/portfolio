@@ -13,6 +13,7 @@ const script: { cmd: string; kind: BlockKind }[] = [
   { cmd: 'ls -la ~/games/', kind: 'ls' },
   { cmd: 'git log --graph experience', kind: 'gitlog' },
   { cmd: 'cat skills.json', kind: 'skills' },
+  { cmd: 'cat about.md', kind: 'about' },
   { cmd: 'gh repo list --limit 6', kind: 'repos' },
   { cmd: 'cat contact.txt', kind: 'contact' },
 ];

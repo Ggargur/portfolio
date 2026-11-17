@@ -1,7 +1,20 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import type { Output } from '../../terminal/commands';
-import { experiences, links, period, profile, projects, skillCount, skills } from '../../data/portfolio';
+import {
+  awards,
+  education,
+  experiences,
+  links,
+  period,
+  profile,
+  projects,
+  skillCount,
+  skills,
+  spokenLanguages,
+  tracks,
+  yearsOfExperience,
+} from '../../data/portfolio';
 import { formatDate, useGithubRepos } from '../../composables/useGithubRepos';
 
 const props = defineProps<{ out: Output }>();
@@ -43,7 +56,7 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
 
   <div v-else-if="out.kind === 'whoami'">
     <div class="big">{{ profile.name }}</div>
-    <div class="dim">game developer · unity / c# · founder of far beyond studios</div>
+    <div class="dim">c# game developer · {{ yearsOfExperience }}+ years · lead programmer @ {{ profile.now.company.toLowerCase() }} · fullstack on the side</div>
   </div>
 
   <div v-else-if="out.kind === 'neofetch'" class="neo">
@@ -54,15 +67,19 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
       <dt>OS</dt>
       <dd>Game Developer</dd>
       <dt>Host</dt>
-      <dd>{{ profile.studio }}</dd>
+      <dd>{{ profile.now.company }} <span class="dim">({{ profile.now.role.toLowerCase() }})</span></dd>
       <dt>Kernel</dt>
       <dd>Unity + C#</dd>
       <dt>Uptime</dt>
       <dd>shipping since {{ profile.careerStart }}</dd>
+      <dt>Shell</dt>
+      <dd>clojure <span class="dim">(day job @ {{ profile.dayJob.company }})</span></dd>
+      <dt>Locale</dt>
+      <dd>{{ profile.location }}</dd>
       <dt>Packages</dt>
       <dd>{{ skillCount }} (cat skills.json)</dd>
       <dt>Process</dt>
-      <dd>kitty-rhythm-td <span class="warn">(running)</span></dd>
+      <dd>metroidvania-2.5d <span class="warn">(running, NDA)</span></dd>
       <dd class="swatches" aria-hidden="true">
         <span v-for="s in swatches" :key="s" :style="{ background: `var(${s})` }"></span>
       </dd>
@@ -99,8 +116,9 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
       <span class="hash n">{{ e.hash }}</span>
       <span class="msg">
         <span v-if="e.end === null" class="head">(HEAD -&gt; main) </span>
-        <b>{{ e.role }}</b> @ {{ e.company }} <span class="dim">[{{ period(e) }}]</span><br />
-        <span class="cm">{{ e.description }}</span>
+        <b>{{ e.role }}</b> @ {{ e.company }} <span class="dim">[{{ period(e) }}]</span>
+        <span :class="e.track === 'games' ? 'k' : 's'"> #{{ tracks[e.track].toLowerCase() }}</span>
+        <span v-for="(pt, i) in e.points" :key="i" class="cm pt">{{ pt }}</span>
       </span>
     </li>
   </ol>
@@ -137,6 +155,21 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <div v-else-if="out.kind === 'about'" class="about">
+    <div><span class="k"># Awards</span></div>
+    <div v-for="a in awards" :key="a.event">
+      - {{ a.event }}, {{ a.project }}: <span class="warn">{{ a.prizes.join(' · ') }}</span>
+    </div>
+    <div class="gap"><span class="k"># Education</span></div>
+    <div v-for="e in education" :key="e.title">- {{ e.title }} <span class="dim">· {{ e.place }}</span></div>
+    <div class="gap"><span class="k"># Languages</span></div>
+    <div>
+      <template v-for="([lang, level], i) in spokenLanguages" :key="lang">
+        {{ lang }} <span class="dim">({{ level.toLowerCase() }})</span>{{ i < spokenLanguages.length - 1 ? ' · ' : '' }}
+      </template>
     </div>
   </div>
 
@@ -273,6 +306,18 @@ dd {
 .msg {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+.pt {
+  display: block;
+}
+.pt::before {
+  content: '  ';
+}
+.about {
+  display: grid;
+}
+.about .gap {
+  margin-top: 10px;
 }
 .json {
   margin: 0;

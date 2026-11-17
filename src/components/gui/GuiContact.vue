@@ -24,7 +24,7 @@ const others = links.filter((l) => l.key !== 'email');
   <section id="contact" class="sec" aria-labelledby="h-contact">
     <SectionHead id="h-contact" title="Contact" cmd="cat contact.txt" />
     <div class="box">
-      <p class="lead">Working on a game or a Unity project? Write to me.</p>
+      <p class="lead">Working on a game, a Unity project or a web app? Write to me.</p>
       <div class="mail">
         <a :href="`mailto:${email}`" class="addr">{{ email }}</a>
         <button type="button" class="copy" @click="copyEmail">

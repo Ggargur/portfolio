@@ -21,7 +21,7 @@ const ordered = [...projects].sort((a, b) => Number(!!b.flagship) - Number(!!a.f
       >
         <img :src="p.image" :alt="`${p.title} cover art`" loading="lazy" />
         <div class="body">
-          <span v-if="p.flagship" class="status">in development</span>
+          <span v-if="p.badge" class="status">{{ p.badge }}</span>
           <h3>{{ p.title }}</h3>
           <p>{{ p.description }}</p>
           <ul class="tags" aria-label="Tags">

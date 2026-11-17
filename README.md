@@ -1,6 +1,6 @@
 # Gabriel Gargur · Portfolio
 
-Personal site of Gabriel Gargur, game developer (Unity, C#) and founder of Far Beyond Studios.
+Personal site of Gabriel Gargur, C# game developer and fullstack web developer.
 
 The site has two views of the same content, switched from the top bar:
 
@@ -15,7 +15,7 @@ Vue 3 (`<script setup>`), TypeScript and Vite. No UI framework; styles are plain
 
 ## Editing content
 
-Everything shown on the site lives in [`src/data/portfolio.ts`](src/data/portfolio.ts): projects, experience, skills and contact links. Both views and the console read from it, so one edit updates all three.
+Everything shown on the site lives in [`src/data/portfolio.ts`](src/data/portfolio.ts): projects, experience (games and web tracks), skills, awards, education and contact links. Both views and the console read from it, so one edit updates all three.
 
 Console commands are in [`src/terminal/commands.ts`](src/terminal/commands.ts).
 

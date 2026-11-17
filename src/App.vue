@@ -8,6 +8,7 @@ import GuiProjects from './components/gui/GuiProjects.vue';
 import GuiExperience from './components/gui/GuiExperience.vue';
 import GuiSkills from './components/gui/GuiSkills.vue';
 import GuiRepos from './components/gui/GuiRepos.vue';
+import GuiAbout from './components/gui/GuiAbout.vue';
 import GuiContact from './components/gui/GuiContact.vue';
 import TtyView from './components/tty/TtyView.vue';
 import { useViewMode } from './composables/useViewMode';
@@ -52,6 +53,7 @@ watch(mode, () => window.scrollTo({ top: 0 }));
         <GuiProjects />
         <GuiExperience />
         <GuiSkills />
+        <GuiAbout />
         <GuiRepos />
         <GuiContact />
       </div>

@@ -19,6 +19,7 @@ const nav = [
   { href: '#games', label: 'Games' },
   { href: '#experience', label: 'Experience' },
   { href: '#skills', label: 'Skills' },
+  { href: '#about', label: 'Background' },
   { href: '#contact', label: 'Contact' },
 ];
 </script>

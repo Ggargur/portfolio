@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { profile, projects } from '../../data/portfolio';
-
-const flagship = projects.find((p) => p.flagship) ?? projects[0];
+import { profile, yearsOfExperience } from '../../data/portfolio';
 </script>
 
 <template>
   <section class="hero" aria-labelledby="hero-name">
     <div class="copy">
-      <span class="eyebrow">~/gabriel-gargur · {{ profile.role.toLowerCase() }}</span>
+      <span class="eyebrow">~/gabriel-gargur · {{ profile.location.toLowerCase() }}</span>
       <h1 id="hero-name">{{ profile.name }}</h1>
       <p>
-        I make games in <strong>Unity and C#</strong> and run <strong>{{ profile.studio }}</strong>. Before that I built
-        VR science exhibits, hypercasual mobile games and a data dashboard.
+        <strong>C# game developer</strong> with {{ yearsOfExperience }}+ years across VR, mobile, PC and console. I worked on
+        <strong>God of War: Sons of Sparta</strong> at Mega Cat Studios and co-led the award-winning
+        <strong>Kitty Rhythm TD</strong>. I also build web apps, currently in Clojure at {{ profile.dayJob.company }}.
       </p>
       <div class="ctas">
         <a class="btn primary" href="#games">See the games</a>
@@ -19,21 +18,28 @@ const flagship = projects.find((p) => p.flagship) ?? projects[0];
       </div>
     </div>
 
-    <a class="now" :href="flagship.url" target="_blank" rel="noopener noreferrer">
+    <!-- Current project is under NDA: show it as a redacted file instead of a cover. -->
+    <figure class="now" aria-labelledby="now-caption">
       <span class="label"><span class="dot" aria-hidden="true"></span>now building</span>
-      <img :src="flagship.image" :alt="`${flagship.title} cover art`" width="460" height="215" />
-      <span class="caption">
-        <span>{{ flagship.title }}</span>
-        <span class="go">on {{ flagship.host }} ↗</span>
-      </span>
-    </a>
+      <div class="redacted" aria-hidden="true">
+        <span class="stamp">NDA</span>
+        <pre>
+  ██████████  ████  ██████
+  █████  ████████████  ███
+  ████████  ██████  ██████</pre>
+      </div>
+      <figcaption id="now-caption" class="caption">
+        <strong>{{ profile.now.project }}</strong>
+        <span>{{ profile.now.role }} at {{ profile.now.company }} · {{ profile.now.detail }}</span>
+      </figcaption>
+    </figure>
   </section>
 </template>
 
 <style scoped>
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
   gap: 48px;
   align-items: center;
 }
@@ -54,8 +60,8 @@ h1 {
 }
 p {
   margin: 0;
-  max-width: 54ch;
-  font-size: clamp(18px, 2vw, 20px);
+  max-width: 58ch;
+  font-size: clamp(17px, 1.9vw, 19px);
   color: var(--muted);
 }
 strong {
@@ -93,30 +99,22 @@ strong {
   box-shadow: none;
 }
 
-/* "Now building" is a pinned snapshot: slightly rotated, hard shadow. */
+/* A pinned, slightly rotated case file with a hard shadow. */
 .now {
+  margin: 0;
   display: grid;
-  gap: 10px;
-  padding: 12px 12px 14px;
-  text-decoration: none;
-  color: var(--ink);
+  gap: 12px;
+  padding: 14px 14px 16px;
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: var(--r-sm);
   box-shadow: var(--offset);
   transform: rotate(1.5deg);
-  transition: transform var(--t-med) var(--ease-out);
 }
-.now:hover {
-  transform: rotate(0deg) translateY(-3px);
-}
-.now img {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 460 / 215;
-  object-fit: cover;
-  border-radius: 3px;
+@media (prefers-reduced-motion: reduce) {
+  .now {
+    transform: none;
+  }
 }
 .label {
   display: inline-flex;
@@ -143,21 +141,48 @@ strong {
     opacity: 0.35;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .now,
-  .now:hover {
-    transform: none;
-  }
+.redacted {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 460 / 215;
+  overflow: hidden;
+  border-radius: 3px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--surface-2) 0 10px,
+    color-mix(in srgb, var(--accent-soft) 45%, var(--surface-2)) 10px 20px
+  );
+}
+.redacted pre {
+  margin: 0;
+  font: 700 clamp(9px, 1.4vw, 13px) / 1.2 var(--f-mono);
+  color: var(--ink);
+  opacity: 0.85;
+}
+.stamp {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font: 700 13px/1 var(--f-mono);
+  letter-spacing: 0.2em;
+  color: var(--warm);
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  padding: 5px 6px 5px 8px;
+  transform: rotate(-6deg);
+  background: var(--surface);
 }
 .caption {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font: 600 16px/1.3 var(--f-display);
+  display: grid;
+  gap: 4px;
 }
-.go {
-  font: 500 13px/1.6 var(--f-mono);
-  color: var(--accent);
+.caption strong {
+  font: 700 18px/1.25 var(--f-display);
+}
+.caption span {
+  font: 400 13px/1.5 var(--f-mono);
+  color: var(--muted);
 }
 @media (max-width: 820px) {
   .hero {
@@ -165,7 +190,7 @@ strong {
     gap: 36px;
   }
   .now {
-    max-width: 420px;
+    max-width: 440px;
   }
 }
 </style>

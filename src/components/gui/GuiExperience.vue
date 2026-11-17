@@ -1,19 +1,48 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import SectionHead from './SectionHead.vue';
-import { experiences, period } from '../../data/portfolio';
+import { experiences, period, tracks, type Track } from '../../data/portfolio';
+
+type Filter = 'all' | Track;
+const filter = ref<Filter>('all');
+const filters: { id: Filter; label: string }[] = [
+  { id: 'all', label: 'All' },
+  ...(Object.keys(tracks) as Track[]).map((t) => ({ id: t, label: tracks[t] })),
+];
+
+const shown = computed(() => (filter.value === 'all' ? experiences : experiences.filter((e) => e.track === filter.value)));
+const count = (f: Filter) => (f === 'all' ? experiences.length : experiences.filter((e) => e.track === f).length);
 </script>
 
 <template>
   <section id="experience" class="sec" aria-labelledby="h-exp">
-    <SectionHead id="h-exp" title="Experience" cmd="git log --oneline" :meta="`${experiences.length} roles`" />
+    <SectionHead id="h-exp" title="Experience" cmd="git log --oneline" :meta="`${shown.length} roles`" />
+
+    <div class="filters" role="group" aria-label="Filter roles">
+      <button
+        v-for="f in filters"
+        :key="f.id"
+        type="button"
+        :aria-pressed="filter === f.id"
+        @click="filter = f.id"
+      >
+        {{ f.label }} <span class="n">{{ count(f.id) }}</span>
+      </button>
+    </div>
+
     <ol class="timeline">
-      <li v-for="e in experiences" :key="e.hash" :class="{ current: e.end === null }">
+      <li v-for="e in shown" :key="e.hash" :class="{ current: e.end === null }">
         <span class="when">{{ period(e) }}</span>
         <span class="rail" aria-hidden="true"><i></i></span>
         <div class="what">
-          <h3>{{ e.role }} <span>· {{ e.company }}</span></h3>
-          <p>{{ e.description }}</p>
-          <span v-if="e.end === null" class="badge">current</span>
+          <div class="title">
+            <h3>{{ e.role }} <span>· {{ e.company }}</span></h3>
+            <span class="track" :class="e.track">{{ tracks[e.track] }}</span>
+            <span v-if="e.end === null" class="badge">current</span>
+          </div>
+          <ul>
+            <li v-for="(pt, i) in e.points" :key="i">{{ pt }}</li>
+          </ul>
         </div>
       </li>
     </ol>
@@ -23,15 +52,43 @@ import { experiences, period } from '../../data/portfolio';
 <style scoped>
 .sec {
   display: grid;
-  gap: 28px;
+  gap: 24px;
   scroll-margin-top: 96px;
+}
+.filters {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.filters button {
+  min-height: 40px;
+  padding: 0 14px;
+  font: 500 13px/1 var(--f-mono);
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  transition: color var(--t-fast), border-color var(--t-fast), background-color var(--t-fast);
+}
+.filters button:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+.filters button[aria-pressed='true'] {
+  color: var(--bg);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.filters .n {
+  opacity: 0.65;
+  margin-left: 4px;
 }
 .timeline {
   list-style: none;
-  margin: 0;
+  margin: 8px 0 0;
   padding: 0;
 }
-li {
+.timeline > li {
   display: grid;
   grid-template-columns: 170px 24px 1fr;
   gap: 0 16px;
@@ -55,10 +112,10 @@ li {
   width: 2px;
   background: var(--line);
 }
-li:first-child .rail::before {
+.timeline > li:first-child .rail::before {
   top: 10px;
 }
-li:last-child .rail::before {
+.timeline > li:last-child .rail::before {
   bottom: auto;
   height: 10px;
 }
@@ -77,9 +134,14 @@ li:last-child .rail::before {
 }
 .what {
   display: grid;
-  gap: 4px;
-  justify-items: start;
-  padding-bottom: 30px;
+  gap: 8px;
+  padding-bottom: 32px;
+}
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
 }
 h3 {
   margin: 0;
@@ -89,23 +151,37 @@ h3 span {
   color: var(--muted);
   font-weight: 600;
 }
-p {
-  margin: 0;
-  max-width: 60ch;
-  color: var(--muted);
-}
+.track,
 .badge {
-  margin-top: 4px;
   font: 500 11px/1 var(--f-mono);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--warm);
   border: 1px solid currentColor;
   border-radius: 4px;
   padding: 4px 6px;
 }
+.track.games {
+  color: var(--accent);
+}
+.track.web {
+  color: var(--syn-str);
+}
+.badge {
+  color: var(--warm);
+}
+.what ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+  max-width: 68ch;
+  color: var(--muted);
+}
+.what ul li::marker {
+  color: var(--rule);
+}
 @media (max-width: 640px) {
-  li {
+  .timeline > li {
     grid-template-columns: 18px 1fr;
     gap: 0 12px;
   }
