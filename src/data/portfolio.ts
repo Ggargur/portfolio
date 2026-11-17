@@ -1,6 +1,7 @@
 import kittyRhythm from '../assets/kitty-rhythm-td.webp';
 import propertyCollector from '../assets/property-collector.webp';
 import tinySports from '../assets/tiny-sports.webp';
+import godOfWar from '../assets/god-of-war-sons-of-sparta.webp';
 
 export interface Project {
   slug: string;
@@ -54,6 +55,7 @@ export const projects: Project[] = [
   {
     slug: 'god-of-war-sons-of-sparta',
     title: 'God of War: Sons of Sparta',
+    image: godOfWar,
     description: 'A shipped console title. I fixed gameplay bugs and implemented area mechanics.',
     host: 'console',
     tags: ['Unity', 'Commercial'],
